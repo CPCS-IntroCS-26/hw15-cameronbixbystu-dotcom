@@ -6,7 +6,7 @@ import pgzrun
 
 
 # Variables
-TITLE = "Platform Game"
+TITLE = "Volcano Parkour"
 WIDTH = 800
 HEIGHT = 500
 player = Rect((100, 400), (40, 40))
@@ -19,8 +19,8 @@ platforms = [
     Rect((0, 470), (800, 30)),
     Rect((100, 380), (150, 20)),
     Rect((150, 250), (150, 20)),
-    Rect((300, 150), (20, 1000)),
-    Rect((415, 150), (20, 1000)),
+    Rect((300, 150), (20, 500)),
+    Rect((415, 150), (20, 500)),
     Rect((650, 375), (100, 20))
 
 ]
@@ -33,7 +33,7 @@ coins = [
 ]
 
 #Hazards
-lava = Rect((315, 170), (100, 970))
+lava = Rect((-1000, 170), (1000, 970))
 
 #Win conditions
 goal = Rect((730, 420), (40, 50))
@@ -65,10 +65,14 @@ def draw():
 
 #Code
 def update():
-    global velocity_y, on_ground
+    global velocity_y, on_ground, lava_velocity_x
 
     velocity_y += gravity
     player.y += velocity_y
+
+    lava_velocity_x = 0
+    lava_velocity_x += 2
+    lava.x += lava_velocity_x
 
     global score
 
@@ -103,15 +107,13 @@ def update():
         on_ground = False
 
     
-    if keyboard.left and player.left != platform.right:
+    if keyboard.left and player.left:
         player.x -= 5
-    else:
-        player.x -= 0
 
-    if keyboard.right and player.right != platform.left:
+
+    if keyboard.right and player.right:
         player.x += 5
-    else:
-        player.x += 0
+
 
 
     if player.left < 0:
